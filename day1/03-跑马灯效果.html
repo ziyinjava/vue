@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <!--1.导入Vue包-->
+    <script src="lib/vue-2.4.0.js"></script>
+</head>
+
+<body>
+    <!--2.创建一个要控制的区域-->
+    <div id="app">
+        <input type="button" value="浪起来" @click="lang">
+        <input type="button" value="低调" @click="stop">
+        <h4>{{msg}}</h4>
+    </div>
+
+    <script>
+        //注意: 在vm实例中,想要获取data上的数据,或者想要调用methods中的方法,必须通过this.数据属性名或者this
+        //方法名来进行访问,这里的this就表示,我们new出来的vm对象 
+        var vm = new Vue({
+            el: "#app",
+            data: { //vm会去监听自己身上data中所有数据的改变,只要data中数据改变,会立即把最新的数据从data上同步到页面中去
+                msg: "猥琐发育.别浪~~!",
+                intervalId: null //在data上定义定时器id
+            },
+            methods: {
+                lang() {
+                    // console.log(this.msg);
+                    /**
+                     * 如果是setInterval里面是function(){}则大括号里面的this指向的就不是vm对象了,需要外面进行复制
+                     * var _this = this;
+                     */
+                     if(this.intervalId != null) return; 
+                   this.intervalId = setInterval(() => {
+
+                        var start = this.msg.substring(0, 1);
+                        //获取到后面的所有字符
+                        var end = this.msg.substring(1);
+                        //重新拼接得到新的字符串,并赋值给this.msg
+                        this.msg = end + start;
+
+                    }, 400);
+                },
+
+                stop(){// 停止定时器
+                    clearInterval(this.intervalId);
+                    this.intervalId = null;
+                }
+                
+            }
+        })
+
+        //分析:
+        //1.[浪起来] 按钮绑定一个点击事件 v-on 或 @
+        //2.在按钮的事件处理函数中,写相关的业务逻辑代码 : 
+        //拿到msg字符串, 然后调用字符串的substring来进行字符串的截取操作
+        //把第一个字符截取出来,放到最后一个位置即可
+        //3.为了实现点击下按钮,自动截取的功能,需要把2步骤中的代码,放到一个定时器中:
+    </script>
+</body>
+
+</html>

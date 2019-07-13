@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+<script src="lib/vue-2.4.0.js"></script>
+
+<body>
+
+    <div id="app">
+        <!--v-cloak可以解决在网速很慢的情况下插值表达式闪烁问题-->
+        <p v-cloak>+++++++++{{msg}}-----------</p>
+        <!--v-text 默认是没有闪烁问题-->
+        <!--v-text会覆盖元素中原本的内容,但是插值表达式,只会替换自己的这个占位符,不会把整个元素的内容清空-->
+        <h1 v-text="msg">========</h1>
+
+
+        <div>{{msg2}}</div>
+        <div v-text="msg2"></div>
+        <!--v-html 会把数据当做html显示, 插值和v-text只会把数据都当做存文本显示-->
+        <div v-html="msg2"></div>
+
+        <!--v-bind 是vue中提供的用于绑定属性的指令,会把属性值当成js语句处理,告诉属性这个值是变量真正的值从vue中data中取-->
+        <!--注意: v-bind指令可以简写为 :要绑定的属性-->
+        <!--v-bind中可以写合法的js表达式-->
+        <!-- <input type="button" value="按钮" v-bind:title="mytitle + '123'"> -->
+
+        <!--Vue提供了v-on 事件绑定机制 直接写alert语句是不起作用的, 因为会把alert当成变量去vue里找,但是vue没有定义alert,所以报错-->
+        <!-- <input type="button" value="按钮" :title="mytitle + '123'" v-on:click="alert('hello')"> -->
+        <!-- <input type="button" value="按钮" :title="mytitle + '123'" v-on:click="show"> -->
+        <!--v-on的缩写是@-->
+        <input type="button" value="按钮" :title="mytitle + '123'" @click="show">
+        
+
+    </div>
+
+    <script>
+        var vm = new Vue({
+                el: '#app',
+                data: {
+                    msg: '123',
+                    msg2: '<h1>我是一个大大的h1</h1>',
+                    mytitle: '这是一个自己定义的title'
+                },
+                methods: {  //  这个methods属性定义了当前vue实例所有可用的方法
+                    show:function() {
+                         alert("hello");
+                    }
+
+                }
+            }
+
+        )
+    </script>
+
+    </div>
+</body>
+
+</html>
+
+<!--1.如何定义一个基本的vue代码结构-->
+<!--2.插值表达式和v-text-->
+<!--3.v-cloak -->
+<!--4.v-html -->
+<!--5.v-bind Vue提供的属性绑定机制 缩写是 ： -->
+<!--6.v-on Vue提供的事件绑定机制 缩写是 @  -->
